@@ -1,6 +1,6 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinSerialization)
 }
+
+apply(from = "secrets.gradle.kts")
 
 kotlin {
     androidTarget {
@@ -57,7 +59,7 @@ kotlin {
         }
     }
 }
-
+val secretsProperties = extra["secretsProperties"] as Properties
 android {
     namespace = "com.github.czinkem.nessaj_twitch_schedule"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -68,11 +70,15 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        buildConfigField("String", "CLIENT_ID", "\"${secretsProperties["CLIENT_ID"]}\"")
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     buildTypes {
         getByName("release") {
