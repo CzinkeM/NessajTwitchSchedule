@@ -12,3 +12,7 @@ This is a Kotlin Multiplatform project targeting Android, iOS.
 
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+
+
+To run create file at root directory named secrets.properties and add the following values for it:
+CLIENT_ID=[your_client_id_string]
