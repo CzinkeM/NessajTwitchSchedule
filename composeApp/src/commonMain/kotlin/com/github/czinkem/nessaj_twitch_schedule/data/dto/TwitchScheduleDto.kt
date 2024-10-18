@@ -11,7 +11,7 @@ data class TwitchScheduleDto(
 @Serializable
 data class TwitchScheduleDataDto(
     @SerialName("segments")
-    val segments: List<TwitchScheduleSegmentDto> = emptyList(),
+    val segments: List<TwitchScheduleSegmentDto>? = null,
     @SerialName("broadcaster_id")
     val broadcasterId: String = "",
     @SerialName("broadcaster_name")
