@@ -9,7 +9,7 @@ import io.ktor.client.plugins.ResponseException
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
-import kotlinx.serialization.json.Json
+import io.ktor.client.statement.request
 
 class TwitchHttpClient(
     private val client: HttpClient
@@ -21,6 +21,7 @@ class TwitchHttpClient(
         const val BROADCASTER_ID = "broadcaster_id"
         const val LOGIN = "login"
         const val ID = "id"
+        const val START_TIME = "start_time"
     }
 
     suspend fun getChannelInfo(clientId: String): TwitchUsersDto {
@@ -38,7 +39,7 @@ class TwitchHttpClient(
 
         return when (result.status.value) {
             in 200..299 -> {
-                Json{ignoreUnknownKeys = true}.decodeFromString<TwitchUsersDto>(result.body<String>())
+                JsonWithIgnoreUnknownKeys.decodeFromString<TwitchUsersDto>(result.body<String>())
             }
             else -> {
                 throw ResponseException(result, "")
@@ -61,7 +62,7 @@ class TwitchHttpClient(
 
         return when (result.status.value) {
             in 200..299 -> {
-                Json{ignoreUnknownKeys = true}.decodeFromString<TwitchGameDto>(result.body<String>())
+                JsonWithIgnoreUnknownKeys.decodeFromString<TwitchGameDto>(result.body<String>())
             }
             else -> {
                 throw ResponseException(result, "")
@@ -72,7 +73,6 @@ class TwitchHttpClient(
     suspend fun getBroadcasterSchedule(clientId: String, broadcasterId: String): TwitchScheduleDto {
         val result = try {
             client.get(urlString = TwitchUrlProvider.SCHEDULE_URL) {
-
                 headers {
                     this[HeaderKeys.CLIENT_ID] = clientId
                 }
@@ -84,10 +84,33 @@ class TwitchHttpClient(
 
         return when (result.status.value) {
             in 200..299 -> {
-                Json{ignoreUnknownKeys = true}.decodeFromString<TwitchScheduleDto>(result.body<String>())
+                JsonWithIgnoreUnknownKeys.decodeFromString<TwitchScheduleDto>(result.body<String>())
             }
             else -> {
-                throw ResponseException(result, "")
+                throw ResponseException(result, "${result.request}")
+            }
+        }
+    }
+
+    suspend fun getBroadcasterSchedule(clientId: String, broadcasterId: String, dateString: String): TwitchScheduleDto {
+        val result = try {
+            client.get(urlString = TwitchUrlProvider.SCHEDULE_URL) {
+                headers {
+                    this[HeaderKeys.CLIENT_ID] = clientId
+                }
+                parameter(ParameterKeys.BROADCASTER_ID, broadcasterId)
+                parameter(ParameterKeys.START_TIME, dateString)
+            }
+        } catch (e: Exception) {
+            throw e
+        }
+
+        return when (result.status.value) {
+            in 200..299 -> {
+                JsonWithIgnoreUnknownKeys.decodeFromString<TwitchScheduleDto>(result.body<String>())
+            }
+            else -> {
+                throw ResponseException(result, "${result.request}")
             }
         }
     }
