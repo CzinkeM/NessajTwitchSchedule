@@ -1,47 +1,60 @@
 package com.github.czinkem.nessaj_twitch_schedule.data
 
-import androidx.compose.ui.util.fastMapNotNull
 import com.github.czinkem.nessaj_twitch_schedule.data.dto.TwitchGameDto
-import com.github.czinkem.nessaj_twitch_schedule.domain.mapper.toTwitchSchedule
+import com.github.czinkem.nessaj_twitch_schedule.data.dto.TwitchScheduleDto
 import com.github.czinkem.nessaj_twitch_schedule.domain.model.TwitchSchedule
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.github.czinkem.nessaj_twitch_schedule.domain.model.TwitchScheduleSegment
+import com.github.czinkem.nessaj_twitch_schedule.domain.model.TwitchScheduleSegmentCategory
+import com.github.czinkem.nessaj_twitch_schedule.domain.model.TwitchScheduleSegmentCategoryType
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class TwitchScheduleRepository(
     private val httpClient: TwitchHttpClient,
 ) {
-    suspend fun getScheduleTest(): TwitchSchedule {
+
+    suspend fun getSchedule(dateString: String): TwitchSchedule {
         return httpClient.getBroadcasterSchedule(
             clientId = getClientId(),
             broadcasterId = "40261250",
-            dateString = "2024-10-14T09:00:19Z"
-        ).toTwitchSchedule()
-    }
-
-    fun getSchedule(): Flow<TwitchSchedule> {
-        return flow {
-            val scheduleDto = httpClient.getBroadcasterSchedule(
-                clientId = getClientId(),
-                broadcasterId = "40261250",
-                dateString = "2024-10-14T09:00:19Z"
-            )
-            if (scheduleDto.data.segments != null){
-                val gameInfos = getGamesInfo(scheduleDto.data.segments?.fastMapNotNull { it.category?.id ?: "" } ?: emptyList())
-
-            }else {
-                scheduleDto.toTwitchSchedule()
-            }
-        }
+            dateString = dateString
+        ).mapDtoToModel()
     }
 
     suspend fun getChannelInfo(): String {
         return httpClient.getChannelInfo(clientId = getClientId()).toString()
     }
 
-    suspend fun getGameInfo(gameId: String): TwitchGameDto {
+    private suspend fun getGameInfo(gameId: String): TwitchGameDto {
         return httpClient.getGamesInfo(clientId = getClientId(), gameId = gameId)
     }
-    suspend fun getGamesInfo(gameIdList: List<String>): List<TwitchGameDto> {
-        return gameIdList.map { id -> getGameInfo(id) }
+
+    private suspend fun TwitchScheduleDto.mapDtoToModel(): TwitchSchedule {
+        val segments = this.data.segments?.map { dto ->
+            TwitchScheduleSegment(
+                id = dto.id,
+                startTime = Instant.parse(dto.startTime).toLocalDateTime(TimeZone.currentSystemDefault()),
+                endTime = Instant.parse(dto.endTime).toLocalDateTime(TimeZone.currentSystemDefault()),
+                title = dto.title,
+                category = getTwitchScheduleSegmentCategory(dto.category?.id)
+            )
+        }
+        return TwitchSchedule(
+            segments = segments,
+            vacation = this.data.vacation
+        )
+    }
+
+    private suspend fun getTwitchScheduleSegmentCategory(categoryId: String?): TwitchScheduleSegmentCategory? {
+        if(categoryId == null)
+            return null
+        val dto = getGameInfo(categoryId).data.firstOrNull() ?: return null
+        return TwitchScheduleSegmentCategory(
+            id = dto.id,
+            name = dto.name,
+            artUrl = dto.artUrl,
+            type = TwitchScheduleSegmentCategoryType.parse(dto.name)
+        )
     }
 }

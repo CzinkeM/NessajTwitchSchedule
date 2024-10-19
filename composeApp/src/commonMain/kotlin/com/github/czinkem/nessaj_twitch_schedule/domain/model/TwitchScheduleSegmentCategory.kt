@@ -4,4 +4,5 @@ data class TwitchScheduleSegmentCategory (
     val id: String,
     val name: String,
     val artUrl: String,
+    val type: TwitchScheduleSegmentCategoryType
 )

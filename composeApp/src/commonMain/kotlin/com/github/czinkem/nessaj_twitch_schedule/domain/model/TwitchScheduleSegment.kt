@@ -7,5 +7,5 @@ data class TwitchScheduleSegment(
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
     val title: String,
-    val category: TwitchScheduleSegmentCategory,
+    val category: TwitchScheduleSegmentCategory?,
 )
