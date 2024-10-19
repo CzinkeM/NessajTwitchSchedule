@@ -71,6 +71,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         buildConfigField("String", "CLIENT_ID", "\"${secretsProperties["CLIENT_ID"]}\"")
+        buildConfigField("String", "AUTH_TOKEN", "\"${secretsProperties["AUTH_TOKEN"]}\"")
     }
     packaging {
         resources {
