@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.czinkem.nessaj_twitch_schedule.di.commonModule
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +21,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             App()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopKoin()
     }
 }
 
