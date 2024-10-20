@@ -51,7 +51,7 @@ class ScheduleScreenModel(
         return SegmentCardState(
             title = this.title,
             artUrl = this.category!!.artUrl, // TODO: if it is null or blank use default art
-            timeString = "${this.startTime}",
+            timeString = "${this.startTime.hour}:${this.startTime.minute} - ${this.endTime.hour}:${this.endTime.minute}",
             categoryName = this.category.name,  // TODO: if it is null or blank use default art
             category = this.category.type,
         )

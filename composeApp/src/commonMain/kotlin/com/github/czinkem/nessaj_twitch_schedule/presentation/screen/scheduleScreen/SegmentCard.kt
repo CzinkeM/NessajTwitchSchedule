@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.czinkem.nessaj_twitch_schedule.domain.ArtUrlProvider
 import com.skydoves.landscapist.ImageOptions
@@ -45,7 +47,7 @@ fun SegmentCard(
             Box (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(3f),
+                    .weight(3f)
             ) {
                 CoilImage(
                     modifier = Modifier
@@ -72,18 +74,27 @@ fun SegmentCard(
                             )
                         ),
                 )
+                TimeCard(
+                    modifier = Modifier.align(Alignment.TopStart).padding(16.dp),
+                    timeString = state.timeString,
+                )
             }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(cardColor)
                     .weight(1f)
+                    .background(cardColor)
             ) {
+
                 Text(
-                    text = state.timeString
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = state.title,
+                    fontWeight = FontWeight.Bold,
+
                 )
                 Text(
-                    text = state.title
+                    modifier = Modifier.padding(start = 16.dp),
+                    text = state.categoryName
                 )
             }
         }
