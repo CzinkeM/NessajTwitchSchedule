@@ -50,7 +50,6 @@ class TwitchHttpClient(
     suspend fun getGamesInfo(clientId: String, gameId: String): TwitchGameDto {
         val result = try {
             client.get(urlString = TwitchUrlProvider.GAMES_URL) {
-
                 headers {
                     this[HeaderKeys.CLIENT_ID] = clientId
                 }
@@ -70,13 +69,15 @@ class TwitchHttpClient(
         }
     }
 
-    suspend fun getBroadcasterSchedule(clientId: String, broadcasterId: String): TwitchScheduleDto {
+    suspend fun getBroadcasterSchedule(clientId: String, broadcasterId: String, startDate: String): TwitchScheduleDto {
         val result = try {
             client.get(urlString = TwitchUrlProvider.SCHEDULE_URL) {
                 headers {
                     this[HeaderKeys.CLIENT_ID] = clientId
                 }
                 parameter(ParameterKeys.BROADCASTER_ID, broadcasterId)
+                parameter(ParameterKeys.START_TIME, startDate)
+                parameter("first", 10)
             }
         } catch (e: Exception) {
             throw e
@@ -84,30 +85,8 @@ class TwitchHttpClient(
 
         return when (result.status.value) {
             in 200..299 -> {
-                JsonWithIgnoreUnknownKeys.decodeFromString<TwitchScheduleDto>(result.body<String>())
-            }
-            else -> {
-                throw ResponseException(result, "${result.request}")
-            }
-        }
-    }
-
-    suspend fun getBroadcasterSchedule(clientId: String, broadcasterId: String, dateString: String): TwitchScheduleDto {
-        val result = try {
-            client.get(urlString = TwitchUrlProvider.SCHEDULE_URL) {
-                headers {
-                    this[HeaderKeys.CLIENT_ID] = clientId
-                }
-                parameter(ParameterKeys.BROADCASTER_ID, broadcasterId)
-                parameter(ParameterKeys.START_TIME, dateString)
-            }
-        } catch (e: Exception) {
-            throw e
-        }
-
-        return when (result.status.value) {
-            in 200..299 -> {
-                JsonWithIgnoreUnknownKeys.decodeFromString<TwitchScheduleDto>(result.body<String>())
+                var bodyString = result.body<String>()
+                JsonWithIgnoreUnknownKeys.decodeFromString<TwitchScheduleDto>(bodyString)
             }
             else -> {
                 throw ResponseException(result, "${result.request}")

@@ -53,7 +53,7 @@ fun SegmentCard(
                         .fillMaxWidth()
                     ,
                     imageModel = {
-                        ArtUrlProvider.provideScaledSize(state.artUrl, 1f)
+                        ArtUrlProvider.provideScaledSize(state.artUrl, .5f)
                     },
                     imageOptions = ImageOptions(
                         alignment = Alignment.Center,

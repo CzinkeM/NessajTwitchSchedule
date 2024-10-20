@@ -7,21 +7,48 @@ import com.github.czinkem.nessaj_twitch_schedule.domain.model.TwitchScheduleSegm
 import com.github.czinkem.nessaj_twitch_schedule.domain.model.TwitchScheduleSegmentCategory
 import com.github.czinkem.nessaj_twitch_schedule.domain.model.TwitchScheduleSegmentCategoryType
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.atTime
 import kotlinx.datetime.toLocalDateTime
 
 class TwitchScheduleRepository(
     private val httpClient: TwitchHttpClient,
 ) {
 
-    suspend fun getSchedule(dateString: String): TwitchSchedule {
-        return httpClient.getBroadcasterSchedule(
-            clientId = getClientId(),
-            broadcasterId = "40261250",
-            dateString = dateString
-        ).mapDtoToModel()
-    }
+    suspend fun getSchedule(startDate: LocalDate, endDate: LocalDate): TwitchSchedule {
+        val endLocalDateTime = endDate.atTime(0,0,0)
+        val startDateString = startDate.atStartOfDayIn(TimeZone.currentSystemDefault()).toString()
+        var shouldGetMoreSegment = true
+        lateinit var twitchSchedule: TwitchSchedule
+        val twitchScheduleSegments = mutableListOf<TwitchScheduleSegment>()
+        while (shouldGetMoreSegment) {
+            val tempTwitchSchedule  = httpClient.getBroadcasterSchedule(
+                clientId = getClientId(),
+                broadcasterId = "40261250",
+                startDate = startDateString,
+            ).mapDtoToModel()
 
+            twitchSchedule = tempTwitchSchedule
+
+            if(tempTwitchSchedule.segments.all { it.startTime < endLocalDateTime }) {
+                twitchScheduleSegments.addAll(twitchSchedule.segments)
+                break
+            }
+
+            if(tempTwitchSchedule.segments.any { it.startTime > endLocalDateTime }) {
+                twitchScheduleSegments.addAll(twitchSchedule.segments.filter { it.startTime < endLocalDateTime })
+                break
+            }
+
+            twitchScheduleSegments.addAll(twitchSchedule.segments)
+
+        }
+
+        return twitchSchedule.copy(segments = twitchScheduleSegments)
+    }
+    //TODO: reserved for further use
     suspend fun getChannelInfo(): String {
         return httpClient.getChannelInfo(clientId = getClientId()).toString()
     }
@@ -41,7 +68,7 @@ class TwitchScheduleRepository(
             )
         }
         return TwitchSchedule(
-            segments = segments,
+            segments = segments ?: emptyList(),
             vacation = this.data.vacation
         )
     }
