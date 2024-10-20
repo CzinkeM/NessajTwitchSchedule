@@ -21,11 +21,12 @@ class ScheduleScreenModel(
     val isScheduleLoading = MutableStateFlow(true)
     private val selectedSchedule = selectedWeek.map {
         isScheduleLoading.update { true }
-        repository.getSchedule(it.first, it.second)
+        val schedule = repository.getSchedule(it.first, it.second)
+        isScheduleLoading.update { false }
+        schedule
     }.stateIn(screenModelScope, SharingStarted.WhileSubscribed(3000), TwitchSchedule(emptyList(),null))
 
     val state = combine(selectedWeek, selectedSchedule) {  week, schedule ->
-        isScheduleLoading.update { false }
         ScheduleScreenState(
             segments = schedule.segments.map { it.toSegmentCardState() },
             startOfWeek = week.first.toString(),

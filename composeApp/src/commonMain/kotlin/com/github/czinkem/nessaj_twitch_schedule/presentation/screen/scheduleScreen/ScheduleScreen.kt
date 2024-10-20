@@ -1,6 +1,7 @@
 package com.github.czinkem.nessaj_twitch_schedule.presentation.screen.scheduleScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
@@ -78,22 +80,38 @@ class ScheduleScreen: Screen {
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .background(MaterialTheme.colors.surface)
+                                    .padding(top = 32.dp)
                             ) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.align(Alignment.Center)
-                                )
+                                Column(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    CircularProgressIndicator()
+                                    Text(text = "Loading selected week data!")
+                                }
                             }
                         }
                     }else {
-                        items(items  = state.segments) { segmentCardState ->
-                            SegmentCard(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(200.dp)
-                                    .padding(vertical = 8.dp)
-                                ,
-                                state = segmentCardState
-                            )
+                        if(state.segments.isEmpty()) {
+                            item {
+                                NothingPlannedCard(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(top = 32.dp)
+                                )
+                            }
+                        }else {
+                            items(items  = state.segments) { segmentCardState ->
+                                SegmentCard(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(200.dp)
+                                        .padding(vertical = 8.dp)
+                                    ,
+                                    state = segmentCardState
+                                )
+                            }
                         }
                     }
                 }
