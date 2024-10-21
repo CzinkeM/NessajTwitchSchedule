@@ -15,6 +15,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun WeekSelector(
@@ -52,7 +54,9 @@ fun WeekSelector(
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
-                text = "$startOfWeek - $endOfWeek"
+                text = "$startOfWeek - $endOfWeek",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
             )
         }
 

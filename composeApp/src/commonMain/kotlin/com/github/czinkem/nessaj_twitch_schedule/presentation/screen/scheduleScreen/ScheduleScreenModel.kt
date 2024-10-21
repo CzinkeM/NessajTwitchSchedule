@@ -30,8 +30,8 @@ class ScheduleScreenModel(
     val state = combine(selectedWeek, selectedSchedule) {  week, schedule ->
         ScheduleScreenState(
             segments = getScheduleSegmentMap(schedule.segments),
-            startOfWeek = week.first.toString(),
-            endOfWeek = week.second.toString()
+            startOfWeek = "${week.first.monthNumber}.${week.first.dayOfMonth}.",
+            endOfWeek = "${week.second.monthNumber}.${week.second.dayOfMonth}."
         )
     }.stateIn(screenModelScope, SharingStarted.WhileSubscribed(3000L), ScheduleScreenState( emptyMap(),"",""))
 
