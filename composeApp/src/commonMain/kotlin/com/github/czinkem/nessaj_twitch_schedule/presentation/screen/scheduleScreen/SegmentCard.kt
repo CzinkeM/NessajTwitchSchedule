@@ -81,7 +81,7 @@ fun SegmentCard(
                 )
                 TimeCard(
                     modifier = Modifier.align(Alignment.TopStart).padding(16.dp),
-                    timeString = state.timeString,
+                    timeString = "${state.startTime.hour}:${state.startTime.minute} - ${state.endTime.hour}:${state.endTime.minute}",
                 )
             }
             Column(

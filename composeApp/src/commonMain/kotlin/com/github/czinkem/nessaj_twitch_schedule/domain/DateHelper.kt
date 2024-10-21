@@ -3,6 +3,7 @@ package com.github.czinkem.nessaj_twitch_schedule.domain
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
@@ -30,5 +31,18 @@ object DateHelper {
             val startOfPreviousWeek = startOfWeek.minus(1, DateTimeUnit.WEEK)
             return startOfPreviousWeek to endOfPreviousWeek
         }
+    }
+
+    fun isDateStillAhead(date: LocalDate): Boolean {
+        val currentClock = Clock.System.now()
+        val currentDate =currentClock.toLocalDateTime(TimeZone.currentSystemDefault()).date
+        return date > currentDate
+
+    }
+
+    fun isStreamLive(startDate: LocalDateTime, endDate: LocalDateTime): Boolean {
+        val currentClock = Clock.System.now()
+        val currentDate =currentClock.toLocalDateTime(TimeZone.currentSystemDefault()).date
+        return currentDate in startDate.date..endDate.date
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.czinkem.nessaj_twitch_schedule.domain.AppProvider
+import com.github.czinkem.nessaj_twitch_schedule.domain.DateHelper
 import com.github.czinkem.nessaj_twitch_schedule.domain.NotificationManager
 import kotlinx.datetime.LocalDateTime
 import org.koin.compose.koinInject
@@ -61,7 +62,8 @@ fun TwitchSegmentBottomSheetContent(
         Divider(
             modifier = Modifier.fillMaxWidth(.9f).padding(vertical = 16.dp)
         )
-        if (state.isLive) {
+
+        if (state.isLive || DateHelper.isDateStillAhead(state.time.date)) {
             Button(
                 onClick = {
                     appLauncher.openTwitchApp()
@@ -75,11 +77,15 @@ fun TwitchSegmentBottomSheetContent(
                     text = "Open in App"
                 )
             }
-        }else {
+        }else{
             OutlinedButton(
                 border = BorderStroke(2.dp, MaterialTheme.colors.primary),
                 onClick = {
-                    notificationManager.setNotificationAtTime(state.time)
+                    notificationManager.setNotificationAtTime(
+                        time = state.time,
+                        notificationTitle = state.title,
+                        notificationText = "Fyrexxx's ${state.title} stream is starting!"
+                    )
                 }
             ) {
                 Icon(

@@ -39,6 +39,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.github.czinkem.nessaj_twitch_schedule.domain.DateHelper
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -46,7 +47,6 @@ import kotlinx.datetime.toLocalDateTime
 import nessajtwitchschedule.composeapp.generated.resources.Res
 import nessajtwitchschedule.composeapp.generated.resources.nessaj_logo_64px
 import org.jetbrains.compose.resources.painterResource
-import kotlin.random.Random
 
 class ScheduleScreen: Screen {
 
@@ -168,7 +168,7 @@ class ScheduleScreen: Screen {
                                                     sheetContentState = TwitchSegmentBottomSheetContentState(
                                                         title = segment.title,
                                                         categoryName = segment.categoryName,
-                                                        isLive = Random.nextBoolean(),
+                                                        isLive = DateHelper.isStreamLive(segment.startTime, segment.endTime),
                                                         time = Clock.System.now().toLocalDateTime(
                                                             TimeZone.currentSystemDefault()
                                                         )
