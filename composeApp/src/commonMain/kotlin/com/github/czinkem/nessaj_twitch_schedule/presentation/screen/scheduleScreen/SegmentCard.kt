@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.czinkem.nessaj_twitch_schedule.domain.ArtUrlProvider
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
@@ -87,13 +88,16 @@ fun SegmentCard(
             ) {
 
                 Text(
-                    modifier = Modifier.padding(start = 8.dp),
+                    modifier = Modifier
+                        .padding(start = 8.dp),
                     text = state.title,
                     fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
 
                 )
                 Text(
-                    modifier = Modifier.padding(start = 16.dp),
+                    modifier = Modifier
+                        .padding(start = 8.dp),
                     text = state.categoryName
                 )
             }

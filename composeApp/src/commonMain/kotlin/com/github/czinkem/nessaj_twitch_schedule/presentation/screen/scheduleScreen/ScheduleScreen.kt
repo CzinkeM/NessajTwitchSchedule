@@ -102,15 +102,22 @@ class ScheduleScreen: Screen {
                                 )
                             }
                         }else {
-                            items(items  = state.segments) { segmentCardState ->
-                                SegmentCard(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .heightIn(200.dp, 300.dp)
-                                        .padding(vertical = 8.dp)
-                                    ,
-                                    state = segmentCardState
-                                )
+                            state.segments.forEach { (day, segments)->
+                                item {
+                                    DayOfWeekHeader(
+                                        modifier = Modifier.padding(vertical = 16.dp),
+                                        dayOfWeek = day
+                                    )
+                                }
+                                items(segments) { segment ->
+                                    SegmentCard(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .heightIn(200.dp, 300.dp)
+                                            .padding(vertical = 8.dp),
+                                        state = segment
+                                    )
+                                }
                             }
                         }
                     }

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.DayOfWeek
 
 class ScheduleScreenModel(
     private val repository: TwitchScheduleRepository
@@ -28,11 +29,11 @@ class ScheduleScreenModel(
 
     val state = combine(selectedWeek, selectedSchedule) {  week, schedule ->
         ScheduleScreenState(
-            segments = schedule.segments.map { it.toSegmentCardState() },
+            segments = getScheduleSegmentMap(schedule.segments),
             startOfWeek = week.first.toString(),
             endOfWeek = week.second.toString()
         )
-    }.stateIn(screenModelScope, SharingStarted.WhileSubscribed(3000L), ScheduleScreenState(emptyList(),"",""))
+    }.stateIn(screenModelScope, SharingStarted.WhileSubscribed(3000L), ScheduleScreenState( emptyMap(),"",""))
 
     fun onPreviousWeekButtonClicked() {
         selectedWeek.update {
@@ -55,5 +56,12 @@ class ScheduleScreenModel(
             categoryName = this.category.name,  // TODO: if it is null or blank use default art
             category = this.category.type,
         )
+    }
+
+    private fun getScheduleSegmentMap(segments: List<TwitchScheduleSegment>): Map<DayOfWeek, List<SegmentCardState>> {
+        return segments
+            .groupBy { segment -> segment.startTime.dayOfWeek}
+            .map{ (day, segments) -> day to segments.map { it.toSegmentCardState() } }
+            .toMap()
     }
 }
