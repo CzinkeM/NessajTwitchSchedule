@@ -1,5 +1,6 @@
 package com.github.czinkem.nessaj_twitch_schedule.presentation.screen.scheduleScreen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,16 +11,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Android
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,6 +29,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import nessajtwitchschedule.composeapp.generated.resources.Res
+import nessajtwitchschedule.composeapp.generated.resources.nessaj_logo_64px
+import org.jetbrains.compose.resources.painterResource
 
 class ScheduleScreen: Screen {
 
@@ -48,10 +50,15 @@ class ScheduleScreen: Screen {
             ) {
                 TopAppBar(
                     title = {
-                        Icon(
-                            imageVector = Icons.Default.Android,
-                            contentDescription = null
-                        )
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            Image(
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .align(Alignment.Center),
+                                painter = painterResource(Res.drawable.nessaj_logo_64px),
+                                contentDescription = null
+                            )
+                        }
                     }
                 )
                 LazyColumn(
