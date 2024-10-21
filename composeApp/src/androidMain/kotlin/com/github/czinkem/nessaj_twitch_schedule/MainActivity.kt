@@ -6,8 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.czinkem.nessaj_twitch_schedule.di.commonModule
+import com.github.czinkem.nessaj_twitch_schedule.domain.AppProvider
+import com.github.czinkem.nessaj_twitch_schedule.domain.NotificationManager
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +19,10 @@ class MainActivity : ComponentActivity() {
             modules(
                 commonModule,
                 androidModule,
+                module {
+                    single { AppProvider(this@MainActivity) }
+                    single { NotificationManager(this@MainActivity) }
+                }
             )
         }
         setContent {

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,10 +26,12 @@ import com.github.czinkem.nessaj_twitch_schedule.domain.ArtUrlProvider
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SegmentCard(
     modifier: Modifier = Modifier,
     state: SegmentCardState,
+    onClick: () -> Unit
 ) {
 
     val cardColor by remember(state) {
@@ -40,7 +43,8 @@ fun SegmentCard(
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
-        border = BorderStroke(2.dp, MaterialTheme.colors.primary)
+        border = BorderStroke(2.dp, MaterialTheme.colors.primary),
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
