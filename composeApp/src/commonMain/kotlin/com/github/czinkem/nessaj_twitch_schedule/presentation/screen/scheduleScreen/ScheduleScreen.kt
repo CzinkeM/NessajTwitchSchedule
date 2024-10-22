@@ -41,9 +41,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.github.czinkem.nessaj_twitch_schedule.domain.DateHelper
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import nessajtwitchschedule.composeapp.generated.resources.Res
 import nessajtwitchschedule.composeapp.generated.resources.nessaj_logo_64px
 import org.jetbrains.compose.resources.painterResource
@@ -169,9 +166,7 @@ class ScheduleScreen: Screen {
                                                         title = segment.title,
                                                         categoryName = segment.categoryName,
                                                         isLive = DateHelper.isStreamLive(segment.startTime, segment.endTime),
-                                                        time = Clock.System.now().toLocalDateTime(
-                                                            TimeZone.currentSystemDefault()
-                                                        )
+                                                        time = segment.startTime
                                                     )
                                                     sheetState.show()
                                                 }

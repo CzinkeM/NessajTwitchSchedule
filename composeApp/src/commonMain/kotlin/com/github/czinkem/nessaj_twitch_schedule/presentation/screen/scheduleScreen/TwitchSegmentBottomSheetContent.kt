@@ -63,7 +63,7 @@ fun TwitchSegmentBottomSheetContent(
             modifier = Modifier.fillMaxWidth(.9f).padding(vertical = 16.dp)
         )
 
-        if (state.isLive || DateHelper.isDateStillAhead(state.time.date)) {
+        if (state.isLive || DateHelper.isTimePassed(state.time)) {
             Button(
                 onClick = {
                     appLauncher.openTwitchApp()

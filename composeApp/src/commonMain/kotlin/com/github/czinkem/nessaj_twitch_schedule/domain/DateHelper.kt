@@ -7,6 +7,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 object DateHelper {
@@ -33,11 +34,8 @@ object DateHelper {
         }
     }
 
-    fun isDateStillAhead(date: LocalDate): Boolean {
-        val currentClock = Clock.System.now()
-        val currentDate =currentClock.toLocalDateTime(TimeZone.currentSystemDefault()).date
-        return date > currentDate
-
+    fun isTimePassed(date: LocalDateTime): Boolean {
+        return date.toInstant(TimeZone.currentSystemDefault()) < Clock.System.now()
     }
 
     fun isStreamLive(startDate: LocalDateTime, endDate: LocalDateTime): Boolean {
