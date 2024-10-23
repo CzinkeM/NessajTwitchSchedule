@@ -58,6 +58,9 @@ kotlin {
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.koin)
             implementation(libs.bundles.voyager)
+
+            api(libs.moko.permissions)
+            api(libs.moko.permissions.compose)
         }
     }
 }

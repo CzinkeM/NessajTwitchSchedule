@@ -1,6 +1,7 @@
 package com.github.czinkem.nessaj_twitch_schedule.domain
 
 import android.content.Context
+import android.widget.Toast
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -24,8 +25,11 @@ actual class NotificationManager(
         val notificationWork = OneTimeWorkRequestBuilder<NotificationWorker>()
             .setInputData(notificationData)
             .setInitialDelay(delay, TimeUnit.MINUTES)
+            // FOR TESTING PURPOSES
+//            .setInitialDelay(10, TimeUnit.SECONDS)
             .build()
 
         WorkManager.getInstance(context).enqueue(notificationWork)
+        Toast.makeText(context, "Notification set for $notificationTitle", Toast.LENGTH_SHORT).show()
     }
 }

@@ -73,7 +73,12 @@ class ScheduleScreen: Screen {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
-                            state = it
+                            state = it,
+                            closeSheet = {
+                                scope.launch {
+                                    sheetState.hide()
+                                }
+                            }
                         )
                     }
                 },

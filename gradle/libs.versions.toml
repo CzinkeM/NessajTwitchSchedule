@@ -24,6 +24,8 @@ landscapistVersion = "2.3.8"
 
 workRuntimeKtx = "2.9.1"
 
+moko = "0.18.1"
+
 
 
 [libraries]
@@ -64,6 +66,9 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 landscapist-coil = { module = "com.github.skydoves:landscapist-coil3", version.ref="landscapistVersion"}
 
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
+
+moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko" }
+moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
