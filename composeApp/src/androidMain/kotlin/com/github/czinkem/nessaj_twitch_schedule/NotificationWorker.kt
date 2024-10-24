@@ -11,7 +11,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 
 class NotificationWorker(appContext: Context, workerParams: WorkerParameters): Worker(appContext, workerParams) {
-    //FIXME: add request for permission when clicked the set notification
+
     @SuppressLint("MissingPermission")
     override fun doWork(): Result {
         val title = inputData.getString(NOTIFICATION_TITLE) ?: "Fyrexxx Stream Starts"
@@ -28,7 +28,7 @@ class NotificationWorker(appContext: Context, workerParams: WorkerParameters): W
         return NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.mipmap.ic_launcher_foreground)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     }
 
