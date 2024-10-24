@@ -26,6 +26,8 @@ workRuntimeKtx = "2.9.1"
 
 moko = "0.18.1"
 
+androidSplashScreen = "1.0.1"
+
 
 
 [libraries]
@@ -69,6 +71,8 @@ androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx"
 
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko" }
 moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko" }
+
+androidx-core-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "androidSplashScreen"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
