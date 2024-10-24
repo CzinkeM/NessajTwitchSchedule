@@ -33,7 +33,7 @@ Currently, only the Android version is available. iOS developers are welcome to 
 
 |                                                                |                                                            |                                                               |
 |----------------------------------------------------------------|------------------------------------------------------------|---------------------------------------------------------------|
-| <img src="resources\mockups\mockup_splashscreen.png" width=""> | <img src="resources\mockups\mockup_schedule.png" width=""> | <img src="resources\mockups\mockup_bottomsheet.png" width=""> |
+| <img src="resources\mockups\mockup_splashScreen.png" width=""> | <img src="resources\mockups\mockup_schedule.png" width=""> | <img src="resources\mockups\mockup_bottomsheet.png" width=""> |
 
 ---
 
@@ -51,7 +51,7 @@ Go to the releases section and download the latest version for your platform.
 - Create secret.properties file in the root of the project and add the following content
   - CLIENT_ID={YOUR_CLIENT_ID}
   - AUTH_TOKEN={YOUR_AUTH_TOKEN}
-  - Check Twitch API [documentation](https://dev.twitch.tv/docs/) for further details on how to obtain any of this
+  - Check Twitch API [documentation](https://dev.twitch.tv/docs/) for details on how to obtain these.
 
 - Compile the project 
 
