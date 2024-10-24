@@ -33,7 +33,7 @@ Currently, only the Android version is available. iOS developers are welcome to 
 
 |                                                                |                                                            |                                                               |
 |----------------------------------------------------------------|------------------------------------------------------------|---------------------------------------------------------------|
-| <img src="resources\mockups\mockup_splashscreen.png" width=""> | <img src="resources\mockups\mockup_schedule.png" width=""> | <img src="resources\mockups\mockup_bottomsheet.png" width=""> |
+| <img src="resources\mockups\mockup_splashScreen.png" width=""> | <img src="resources\mockups\mockup_schedule.png" width=""> | <img src="resources\mockups\mockup_bottomsheet.png" width=""> |
 
 ---
 
