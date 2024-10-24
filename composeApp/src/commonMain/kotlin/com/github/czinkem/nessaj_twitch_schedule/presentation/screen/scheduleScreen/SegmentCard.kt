@@ -112,7 +112,7 @@ fun SegmentCard(
                 )
             }
         }
-        if (DateHelper.isTimePassed(state.startTime)) {
+        if (DateHelper.isTimePassed(state.startTime) && DateHelper.isTimePassed(state.endTime)) {
             Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.surface.copy(alpha = .5f))) {
                 Icon(
                     modifier = Modifier.align(Alignment.Center).size(64.dp),
