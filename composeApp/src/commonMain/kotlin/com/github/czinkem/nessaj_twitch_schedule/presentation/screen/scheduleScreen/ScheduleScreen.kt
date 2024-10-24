@@ -1,5 +1,6 @@
 package com.github.czinkem.nessaj_twitch_schedule.presentation.screen.scheduleScreen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +48,7 @@ import org.jetbrains.compose.resources.painterResource
 
 class ScheduleScreen: Screen {
 
-    @OptIn(ExperimentalMaterialApi::class)
+    @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -110,9 +111,12 @@ class ScheduleScreen: Screen {
                             .background(MaterialTheme.colors.surface),
                         contentPadding = PaddingValues(16.dp)
                     ) {
-                        item {
+                        stickyHeader {
                             WeekSelector(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(color = MaterialTheme.colors.surface)
+                                    .padding(vertical = 8.dp),
                                 startOfWeek = state.startOfWeek,
                                 endOfWeek = state.endOfWeek,
                                 onPreviousButtonClick = {
