@@ -10,6 +10,7 @@ val penguinBlack = Color(0xFF070707)
 val reactionStreamRed = Color(0xFFaa0000)
 val fifaStreamGreen = Color(0xFF009150)
 val twitchPurple = Color(0xFFa970ff)
+val youtubeRed = Color(0xFFf61c0d)
 
 
 val nassajColorScheme = darkColors(

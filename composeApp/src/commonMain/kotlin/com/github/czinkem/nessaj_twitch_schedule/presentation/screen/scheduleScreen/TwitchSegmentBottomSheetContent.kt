@@ -7,16 +7,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +34,8 @@ import androidx.compose.ui.unit.sp
 import com.github.czinkem.nessaj_twitch_schedule.domain.AppProvider
 import com.github.czinkem.nessaj_twitch_schedule.domain.DateHelper
 import com.github.czinkem.nessaj_twitch_schedule.domain.NotificationManager
+import com.github.czinkem.nessaj_twitch_schedule.twitchPurple
+import com.github.czinkem.nessaj_twitch_schedule.youtubeRed
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.Permission
@@ -42,6 +45,10 @@ import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
+import nessajtwitchschedule.composeapp.generated.resources.Res
+import nessajtwitchschedule.composeapp.generated.resources.icon_twitch
+import nessajtwitchschedule.composeapp.generated.resources.icon_youtube
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
 data class TwitchSegmentBottomSheetContentState(
@@ -166,45 +173,78 @@ fun TwitchSegmentBottomSheetContent(
         Divider(
             modifier = Modifier.fillMaxWidth(.9f).padding(vertical = 16.dp)
         )
-
-        if (state.isLive || DateHelper.isTimePassed(state.time)) {
-            Button(
-                onClick = {
-                    appLauncher.openTwitchApp()
+        when {
+            DateHelper.isTimePassed(state.time) -> {
+                Button(
+                    onClick = {
+                        appLauncher.openYoutubeApp()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = youtubeRed,
+                        contentColor = MaterialTheme.colors.onPrimary
+                    )
+                ) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(Res.drawable.icon_youtube),
+                        contentDescription = null
+                    )
+                    Spacer(
+                        modifier = Modifier.size(4.dp)
+                    )
+                    Text(
+                        text = "Go to VOD channel"
+                    )
                 }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Android,
-                    contentDescription = null
-                )
-                Text(
-                    text = "Open in App"
-                )
             }
-        }else{
-            OutlinedButton(
-                border = BorderStroke(2.dp, MaterialTheme.colors.primary),
-                onClick = {
-                    if(permissionState == PermissionState.Granted) {
-                        notificationManager.setNotificationAtTime(
-                            time = state.time,
-                            notificationTitle = state.title,
-                            notificationText = "Fyrexxx's ${state.title} stream is starting!"
-                        )
-                        closeSheet()
-                    }else {
-                        shouldShowDialog = true
-                    }
+            state.isLive -> {
+                Button(
+                    onClick = {
+                        appLauncher.openTwitchApp()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = twitchPurple,
+                        contentColor = MaterialTheme.colors.onPrimary
+                    )
+                ) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(Res.drawable.icon_twitch),
+                        contentDescription = null
+                    )
+                    Spacer(
+                        modifier = Modifier.size(4.dp)
+                    )
+                    Text(
+                        text = "Open Twitch stream"
+                    )
                 }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Schedule,
-                    contentDescription = null,
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "Set notification"
-                )
+            }
+            else -> {
+                OutlinedButton(
+                    border = BorderStroke(2.dp, MaterialTheme.colors.primary),
+                    onClick = {
+                        if(permissionState == PermissionState.Granted) {
+                            notificationManager.setNotificationAtTime(
+                                time = state.time,
+                                notificationTitle = state.title,
+                                notificationText = "Fyrexxx's ${state.title} stream is starting!"
+                            )
+                            closeSheet()
+                        }else {
+                            shouldShowDialog = true
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Schedule,
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "Set notification"
+                    )
+                }
             }
         }
     }
