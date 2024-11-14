@@ -47,4 +47,9 @@ object DateHelper {
         val minute = if (localDateTime.minute < 10) "0${localDateTime.minute}" else "${localDateTime.minute}"
         return "$hour:$minute"
     }
+
+    fun today(): LocalDate {
+        val currentClock = Clock.System.now()
+        return currentClock.toLocalDateTime(TimeZone.currentSystemDefault()).date
+    }
 }

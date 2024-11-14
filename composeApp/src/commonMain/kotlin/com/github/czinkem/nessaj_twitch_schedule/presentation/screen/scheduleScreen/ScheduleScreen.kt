@@ -159,7 +159,8 @@ class ScheduleScreen: Screen {
                                     item {
                                         DayOfWeekHeader(
                                             modifier = Modifier.padding(vertical = 16.dp),
-                                            dayOfWeek = day
+                                            dayOfWeek = day,
+                                            selected = DateHelper.today().dayOfWeek == day
                                         )
                                     }
                                     items(segments) { segment ->
