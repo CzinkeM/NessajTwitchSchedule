@@ -41,4 +41,10 @@ object DateHelper {
     fun isStreamLive(startDate: LocalDateTime, endDate: LocalDateTime): Boolean {
         return isTimePassed(startDate) && !isTimePassed(endDate)
     }
+
+    fun localDateTimeToHourMinuteString(localDateTime: LocalDateTime): String {
+        val hour = if (localDateTime.hour < 10) "0${localDateTime.hour}" else "${localDateTime.hour}"
+        val minute = if (localDateTime.minute < 10) "0${localDateTime.minute}" else "${localDateTime.minute}"
+        return "$hour:$minute"
+    }
 }

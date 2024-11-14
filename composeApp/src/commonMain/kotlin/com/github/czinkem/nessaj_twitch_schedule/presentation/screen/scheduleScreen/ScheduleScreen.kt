@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -166,7 +166,7 @@ class ScheduleScreen: Screen {
                                         SegmentCard(
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .heightIn(200.dp, 300.dp)
+                                                .requiredHeight(150.dp)
                                                 .padding(vertical = 8.dp),
                                             state = segment,
                                             onClick = {
