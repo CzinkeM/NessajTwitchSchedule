@@ -42,7 +42,7 @@ class NotificationWorker(private val appContext: Context, workerParams: WorkerPa
                     )
                 }
             )
-            .setSmallIcon(R.drawable.icon_notification) // FIXME:
+            .setSmallIcon(R.drawable.icon_notification)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     }
 

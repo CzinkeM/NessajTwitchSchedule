@@ -39,8 +39,6 @@ object DateHelper {
     }
 
     fun isStreamLive(startDate: LocalDateTime, endDate: LocalDateTime): Boolean {
-        val currentClock = Clock.System.now()
-        val currentDate =currentClock.toLocalDateTime(TimeZone.currentSystemDefault()).date
-        return currentDate in startDate.date..endDate.date
+        return isTimePassed(startDate) && !isTimePassed(endDate)
     }
 }
