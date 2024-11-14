@@ -3,18 +3,22 @@ package com.github.czinkem.nessaj_twitch_schedule
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.TaskStackBuilder
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.github.czinkem.nessaj_twitch_schedule.domain.IntentProvider
 
-class NotificationWorker(appContext: Context, workerParams: WorkerParameters): Worker(appContext, workerParams) {
+class NotificationWorker(private val appContext: Context, workerParams: WorkerParameters): Worker(appContext, workerParams) {
 
     @SuppressLint("MissingPermission")
     override fun doWork(): Result {
-        val title = inputData.getString(NOTIFICATION_TITLE) ?: "Fyrexxx Stream Starts"
+        val title = "Fyrexxx's Stream Starts" //inputData.getString(NOTIFICATION_TITLE)
         val description = inputData.getString(NOTIFICATION_DESCRIPTION) ?: "Fyrexxx Stream Starts"
         val notification = createNotification(title, description)
         with(NotificationManagerCompat.from(applicationContext)) {
@@ -28,7 +32,17 @@ class NotificationWorker(appContext: Context, workerParams: WorkerParameters): W
         return NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.mipmap.ic_launcher_foreground)
+            .setColor(penguinOrange.toArgb())
+            .setContentIntent(
+                TaskStackBuilder.create(appContext).run {
+                    addNextIntentWithParentStack(IntentProvider.Twitch.web)
+                    getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                }
+            )
+            .setSmallIcon(R.drawable.icon_notification) // FIXME:
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     }
 
