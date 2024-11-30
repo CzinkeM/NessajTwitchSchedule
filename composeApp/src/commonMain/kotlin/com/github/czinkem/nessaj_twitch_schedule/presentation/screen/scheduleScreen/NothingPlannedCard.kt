@@ -46,7 +46,7 @@ fun NothingPlannedCard(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Currently there is noting planned to this week!"
+                    text = "Egyenlőre nincs ütemezett stream!"
                 )
             }
         }
